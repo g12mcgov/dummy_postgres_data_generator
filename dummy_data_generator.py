@@ -26,10 +26,10 @@ def queryTable(cursor, table, day):
 	print cursor.fetchall()
 
 if __name__ == "__main__":
-	host = "ec2-54-163-226-9.compute-1.amazonaws.com"
-	database = "d88utg4hgqpgob"
-	username = "uppsdlfesoxmrt"
-	password = "ESZMChU9TsTXJmvEDBvXtm4Vht"
+	host = "ec2-54compute-1.amazonaws.com"
+	database = "dgqpgob"
+	username = "uppssoxmrt"
+	password = "ESZMCvXtm4Vht"
 
 	cursor = connect(host, database, username, password)
 	queryTable(cursor, '"wakeforest.average"', "'monday'")
