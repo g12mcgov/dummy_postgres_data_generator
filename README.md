@@ -1,2 +1,113 @@
 # dummy_postgres_data_generator
 A simply utility script used to insert faux data into the GymPeak API dev PostgreSQL database.
+
+Before we actually got our Raspberry Pi + sensor data up and running, this script allows us to mass-generate fake data to allow us to start returning (pseudo) live data from our API.
+
+Example Output
+=======
+
+```SQL
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:07', 0); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:09', 1); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:13', 0); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:15', 1); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:20', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:21', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:21', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:22', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:22', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:26', 1); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:27', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:27', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:34', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:34', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:38', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:43', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:43', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:47', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/36/13 19:36:54', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/36/13 19:36:58', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:00', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:04', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:05', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:08', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:15', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:22', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:28', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:35', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:40', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:45', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:47', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:51', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:51', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:52', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/37/13 19:37:55', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/37/13 19:37:58', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:04', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:08', 7); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:10', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:17', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:19', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:20', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:26', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:30', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:34', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:39', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:39', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:39', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/38/13 19:38:41', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:46', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:47', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:49', 7); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:53', 8); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:53', 9); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/38/13 19:38:59', 10); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/39/13 19:39:01', 9); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:07', 10); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:08', 11); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:12', 12); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:14', 13); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:21', 1); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:28', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/39/13 19:39:31', 1); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:33', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:40', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/39/13 19:39:43', 2); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:46', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:48', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/39/13 19:39:51', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/39/13 19:39:57', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/40/13 19:40:02', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:02', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/40/13 19:40:02', 3); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:08', 4); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:08', 5); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:11', 6); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:12', 7); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:12', 8); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:15', 9); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:21', 10); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:27', 11); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:33', 12); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:36', 13); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:43', 14); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/40/13 19:40:45', 13); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/40/13 19:40:52', 12); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/40/13 19:40:56', 13); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:03', 14); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:06', 15); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/41/13 19:41:07', 14); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:07', 15); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:12', 16); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:18', 17); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/41/13 19:41:19', 16); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:23', 17); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/41/13 19:41:30', 16); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/41/13 19:41:36', 15); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:42', 16); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:49', 17); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:52', 18); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/41/13 19:41:57', 19); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (exit, 'monday', '2015/41/13 19:41:57', 18); 
+INSERT INTO "wakeforest.historical" (activity, day, timestamp, time) VALUES (entry, 'monday', '2015/42/13 19:42:02', 19); 
+```

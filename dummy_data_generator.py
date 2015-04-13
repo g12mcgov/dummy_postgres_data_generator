@@ -5,7 +5,7 @@
 # Description: A simple script to insert dummy data into the GymPeak API PostgreSQL database.
 #
 
-
+import time
 import psycopg2
 import datetime
 from random import randint	
@@ -31,7 +31,7 @@ def queryTable(cursor, table, day):
 
 	return cursor.fetchall()
 
-def insertDailyData(cursor, table):
+def insertAverageData(cursor, table):
 
 	time = datetime.datetime(2015, 1, 1, 6, 0, 0)
 	end_date = datetime.datetime(2015, 1, 1, 0, 0, 0)
@@ -107,19 +107,91 @@ def insertDailyData(cursor, table):
 	print "Query Ok."
 
 
+def insertHistoricalData(cursor, table):
+
+
+	time_ = datetime.datetime(2015, 9, 15, 6, 0, 0)
+	end_date = datetime.datetime(2015, 1, 1, 0, 0, 0)
+
+	queries = []
+
+	#print datetime.datetime.time(time_).seconds
+
+	activities = {0: "exit", 1: "entry"}
+
+	weekdays = [
+	"'monday'",
+	"'tuesday'",
+	"'wednesday'",
+	"'thursday'"
+	]
+
+	# datetime.datetime.time(time_).seconds
+
+	friday = "'friday'"
+	saturday = "'saturday'"
+	sunday = "'sunday'"
+
+	
+	for day in weekdays:
+
+		count = 0
+		exits = 0
+		entries = 0
+
+		for i in range(0, 18):
+			for j in range(0, 60):
+
+				current_timestamp = datetime.datetime.now()
+				activity = activities[randint(0, 1)]
+
+				# Generate a random number between 30 and 85
+
+				#assert(exits == entries)
+
+				if activity == "entry":
+					count += 1
+					entries += 1
+				else:
+					count -= 1
+					exits += 1
+
+				if count < 0:
+					count = 0
+
+				query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + current_timestamp.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+		
+				print query 
+				queries.append(query)
+
+				# # Increase the time each time by 1 hour
+				time_ += datetime.timedelta(hours=1)
+				
+				# # Delay for anywhere between 0 to 10 seconds
+				time.sleep(randint(0,7))
+							
+			
+
+
+
 
 if __name__ == "__main__":
-
-	host = ""
-	database = ""
-	username = ""
-	password = ""
 
 	# Generate a cursor
 	connection = establishConnection(host, database, username, password)
 	cursor = connection.cursor()
 
-	response = queryTable(cursor, '"wakeforest.average"', "'monday'")
-	insertDailyData(cursor, '"wakeforest.average"')
+	#'"wakeforest.average"'
 
-	connection.commit()
+	schools = [
+	'"unc.average"',
+	'"davidson.average"'
+	]
+
+	#response = queryTable(cursor, '"wakeforest.average"', "'monday'")
+	# for school in schools:
+	# 	insertAverageData(cursor, school)
+
+	insertHistoricalData(cursor, '"wakeforest.historical"')
+
+	# connection.commit()
