@@ -8,7 +8,7 @@
 import time
 import psycopg2
 import datetime
-from random import randint	
+from random import randint
 
 def establishConnection(host, database, username, password):
 	conn_string = "host='%s' dbname='%s' user='%s' password='%s'" % (host, database, username, password)
@@ -109,13 +109,7 @@ def insertAverageData(cursor, table):
 
 def insertHistoricalData(cursor, table):
 
-
-	time_ = datetime.datetime(2015, 9, 15, 6, 0, 0)
-	end_date = datetime.datetime(2015, 1, 1, 0, 0, 0)
-
 	queries = []
-
-	#print datetime.datetime.time(time_).seconds
 
 	activities = {0: "exit", 1: "entry"}
 
@@ -132,47 +126,178 @@ def insertHistoricalData(cursor, table):
 	saturday = "'saturday'"
 	sunday = "'sunday'"
 
+
+	#######################################
+	##### First compute the weekdays ######
+	#######################################
+
+	# Closing time is equal to 11:30pm
+	end_date = datetime.datetime(2015, 9, 15, 23, 30, 0)
 	
 	for day in weekdays:
+		print "Now Processing %s\n" % day
 
-		count = 0
-		exits = 0
-		entries = 0
+		# Reset the counts after each day
+		# Start at 10, to get higher occupancy stats
+		count = 10
 
-		for i in range(0, 18):
-			for j in range(0, 60):
-
-				current_timestamp = datetime.datetime.now()
-				activity = activities[randint(0, 1)]
-
-				# Generate a random number between 30 and 85
-
-				#assert(exits == entries)
-
-				if activity == "entry":
-					count += 1
-					entries += 1
-				else:
-					count -= 1
-					exits += 1
-
-				if count < 0:
-					count = 0
-
-				query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + current_timestamp.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+		# Opening time is equal to 6:00am
+		start_time = datetime.datetime(2015, 9, 15, 5, 30, 0)
 		
-				print query 
-				queries.append(query)
+		while (start_time.time() < end_date.time()):
 
-				# # Increase the time each time by 1 hour
-				time_ += datetime.timedelta(hours=1)
-				
-				# # Delay for anywhere between 0 to 10 seconds
-				time.sleep(randint(0,7))
-							
+			activity = activities[randint(0, 1)]
+
+			if activity == "entry":
+				count += 1
+			else:
+				count -= 1
+
+			if count < 0:
+				count = 0
+
+			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+	
+			print query 
 			
+			queries.append(query)
+			
+			# Generate random seconds between 0 to 47 seconds
+			random_number = randint(0, 47)
+
+			# Increase the time each time by 1 hour
+			start_time += datetime.timedelta(seconds=random_number)
 
 
+	########################################
+	###### Then compute Friday #############
+	########################################
+
+	# Opening time is equal to 5:30am
+	start_time = datetime.datetime(2015, 9, 15, 5, 30, 0)
+	# Closing time is equal to 11:30pm
+	end_date = datetime.datetime(2015, 9, 15, 6, 0, 0)
+
+	# Reset count
+	count = 10
+
+	day = "'friday"
+
+	while (start_time.time() < end_date.time()):
+
+			activity = activities[randint(0, 1)]
+
+			if activity == "entry":
+				count += 1
+			else:
+				count -= 1
+
+			if count < 0:
+				count = 0
+
+			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+	
+			print query 
+			
+			queries.append(query)
+			
+			# Generate random seconds between 0 to 47 seconds
+			random_number = randint(0, 47)
+
+			# Increase the time each time by 1 hour
+			start_time += datetime.timedelta(seconds=random_number)
+
+
+	########################################
+	###### Then compute Saturday ###########
+	########################################
+
+	# Opening time is equal to 10:00am
+	start_time = datetime.datetime(2015, 9, 15, 10, 0, 0)
+	# Closing time is equal to 11:30pm
+	end_date = datetime.datetime(2015, 9, 15, 7, 0, 0)
+
+	# Reset count
+	count = 10
+
+	day = "'saturday'"
+
+	while (start_time.time() < end_date.time()):
+
+			activity = activities[randint(0, 1)]
+
+			if activity == "entry":
+				count += 1
+			else:
+				count -= 1
+
+			if count < 0:
+				count = 0
+
+			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+	
+			print query 
+			
+			queries.append(query)
+			
+			# Generate random seconds between 0 to 47 seconds
+			random_number = randint(0, 47)
+
+			# Increase the time each time by 1 hour
+			start_time += datetime.timedelta(seconds=random_number)
+
+
+
+	########################################
+	###### Then compute Sunday #############
+	########################################
+
+	# Opening time is equal to 1:00pm
+	start_time = datetime.datetime(2015, 9, 15, 13, 0, 0)
+	# Closing time is equal to 11:30pm
+	end_date = datetime.datetime(2015, 9, 15, 23, 30, 0)
+
+
+	# Reset count
+	count = 10
+
+	day = "'sunday'"
+
+	while (start_time.time() < end_date.time()):
+
+			activity = activities[randint(0, 1)]
+
+			if activity == "entry":
+				count += 1
+			else:
+				count -= 1
+
+			if count < 0:
+				count = 0
+
+			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+	
+			print query 
+			
+			queries.append(query)
+			
+			# Generate random seconds between 0 to 17 seconds
+			random_number = randint(0, 17)
+
+			# Increase the time each time by 1 hour
+			start_time += datetime.timedelta(seconds=random_number)
+
+
+	return queries
+
+			
+def writeToFile(queries, name):
+	outfile = open(name,'w')
+
+	for line in queries:
+		outfile.write(line)
+	
+	outfile.close()
 
 
 if __name__ == "__main__":
@@ -181,17 +306,23 @@ if __name__ == "__main__":
 	connection = establishConnection(host, database, username, password)
 	cursor = connection.cursor()
 
-	#'"wakeforest.average"'
 
-	schools = [
+	schools_average = [
 	'"unc.average"',
 	'"davidson.average"'
 	]
 
+	schools_historical = [
+	'"wakeforest.historical"',
+	'"unc.historical"'
+	'"davidson.historical"',
+	]
+
 	#response = queryTable(cursor, '"wakeforest.average"', "'monday'")
-	# for school in schools:
+	# for school in schools_average:
 	# 	insertAverageData(cursor, school)
 
-	insertHistoricalData(cursor, '"wakeforest.historical"')
+	queries = insertHistoricalData(cursor, '"wakeforest.historical"')
+	writeToFile(queries, "historical.sql")
 
 	# connection.commit()
