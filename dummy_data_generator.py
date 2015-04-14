@@ -111,7 +111,7 @@ def insertHistoricalData(cursor, table):
 
 	queries = []
 
-	activities = {0: "exit", 1: "entry"}
+	activities = {0: "'exit'", 1: "'entry'"}
 
 	weekdays = [
 	"'monday'",
@@ -135,8 +135,6 @@ def insertHistoricalData(cursor, table):
 	end_date = datetime.datetime(2015, 9, 15, 23, 30, 0)
 	
 	for day in weekdays:
-		print "Now Processing %s\n" % day
-
 		# Reset the counts after each day
 		# Start at 10, to get higher occupancy stats
 		count = 10
@@ -148,7 +146,7 @@ def insertHistoricalData(cursor, table):
 
 			activity = activities[randint(0, 1)]
 
-			if activity == "entry":
+			if activity == "'entry'":
 				count += 1
 			else:
 				count -= 1
@@ -156,14 +154,13 @@ def insertHistoricalData(cursor, table):
 			if count < 0:
 				count = 0
 
-			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
-	
+			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)	
 			print query 
 			
 			queries.append(query)
 			
 			# Generate random seconds between 0 to 47 seconds
-			random_number = randint(0, 47)
+			random_number = randint(1, 47)
 
 			# Increase the time each time by 1 hour
 			start_time += datetime.timedelta(seconds=random_number)
@@ -187,7 +184,7 @@ def insertHistoricalData(cursor, table):
 
 			activity = activities[randint(0, 1)]
 
-			if activity == "entry":
+			if activity == "'entry'":
 				count += 1
 			else:
 				count -= 1
@@ -195,14 +192,13 @@ def insertHistoricalData(cursor, table):
 			if count < 0:
 				count = 0
 
-			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
-	
+			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)
 			print query 
 			
 			queries.append(query)
 			
 			# Generate random seconds between 0 to 47 seconds
-			random_number = randint(0, 47)
+			random_number = randint(1, 47)
 
 			# Increase the time each time by 1 hour
 			start_time += datetime.timedelta(seconds=random_number)
@@ -226,7 +222,7 @@ def insertHistoricalData(cursor, table):
 
 			activity = activities[randint(0, 1)]
 
-			if activity == "entry":
+			if activity == "'entry'":
 				count += 1
 			else:
 				count -= 1
@@ -234,14 +230,13 @@ def insertHistoricalData(cursor, table):
 			if count < 0:
 				count = 0
 
-			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
-	
+			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)	
 			print query 
 			
 			queries.append(query)
 			
 			# Generate random seconds between 0 to 47 seconds
-			random_number = randint(0, 47)
+			random_number = randint(1, 47)
 
 			# Increase the time each time by 1 hour
 			start_time += datetime.timedelta(seconds=random_number)
@@ -267,7 +262,7 @@ def insertHistoricalData(cursor, table):
 
 			activity = activities[randint(0, 1)]
 
-			if activity == "entry":
+			if activity == "'entry'":
 				count += 1
 			else:
 				count -= 1
@@ -275,18 +270,30 @@ def insertHistoricalData(cursor, table):
 			if count < 0:
 				count = 0
 
-			query = """ INSERT INTO %s (activity, day, timestamp, time) VALUES (%s, %s, %s, %i); """ % (table, activity, day, "'" + start_time.strftime("%Y/%M/%d %H:%M:%S") + "'", count)
+			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)
 	
 			print query 
 			
 			queries.append(query)
 			
 			# Generate random seconds between 0 to 17 seconds
-			random_number = randint(0, 17)
+			random_number = randint(1, 17)
 
 			# Increase the time each time by 1 hour
 			start_time += datetime.timedelta(seconds=random_number)
 
+
+	insertionCount = 0
+	# Insert queries into database
+	print "\nInserting queries... (This might take awhile)."
+	for query in queries:
+		try:
+			cursor.execute(query)
+			insertionCount += 1
+		except psycopg2.Error as err:
+			raise err
+
+	print "Query Ok.", "Inserted (%i) Rows." % insertionCount
 
 	return queries
 
@@ -303,6 +310,11 @@ def writeToFile(queries, name):
 
 if __name__ == "__main__":
 
+	host = "ec2-54-163-226-9.compute-1.amazonaws.com"
+	database = "d88utg4hgqpgob"
+	username = "uppsdlfesoxmrt"
+	password = "ESZMChU9TsTXJmvEDBvXtm4Vht"
+
 	# Generate a cursor
 	connection = establishConnection(host, database, username, password)
 	cursor = connection.cursor()
@@ -314,16 +326,16 @@ if __name__ == "__main__":
 	]
 
 	schools_historical = [
-	'"wakeforest.historical"',
-	'"unc.historical"'
-	'"davidson.historical"',
+	'"davidson.historical"'
 	]
 
 	#response = queryTable(cursor, '"wakeforest.average"', "'monday'")
 	# for school in schools_average:
 	# 	insertAverageData(cursor, school)
 
-	queries = insertHistoricalData(cursor, '"wakeforest.historical"')
-	writeToFile(queries, "historical.sql")
+	# for school in schools_historical:
+	# 	queries = insertHistoricalData(cursor, school)
 
-	# connection.commit()
+	connection.commit()
+
+	writeToFile(queries, "historical.sql")
