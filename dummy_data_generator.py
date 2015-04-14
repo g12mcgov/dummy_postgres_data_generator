@@ -310,10 +310,10 @@ def writeToFile(queries, name):
 
 if __name__ == "__main__":
 
-	host = "ec2-54-163-226-9.compute-1.amazonaws.com"
-	database = "d88utg4hgqpgob"
-	username = "uppsdlfesoxmrt"
-	password = "ESZMChU9TsTXJmvEDBvXtm4Vht"
+	host = "ec2-54-1zonaws.com"
+	database = "dob"
+	username = "uppsd"
+	password = "ESZMCtm4Vht"
 
 	# Generate a cursor
 	connection = establishConnection(host, database, username, password)
