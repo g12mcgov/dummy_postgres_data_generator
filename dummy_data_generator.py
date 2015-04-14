@@ -181,7 +181,7 @@ def insertHistoricalData(cursor, table):
 	# Reset count
 	count = 10
 
-	day = "'friday"
+	day = "'friday'"
 
 	while (start_time.time() < end_date.time()):
 
@@ -296,6 +296,7 @@ def writeToFile(queries, name):
 
 	for line in queries:
 		outfile.write(line)
+		outfile.write("\n")
 	
 	outfile.close()
 
