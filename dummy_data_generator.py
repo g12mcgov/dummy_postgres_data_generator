@@ -109,6 +109,8 @@ def insertAverageData(cursor, table):
 
 def insertHistoricalData(cursor, table):
 
+	print "\nInserting into table [ %s ] ... (This might take awhile)" % table
+
 	queries = []
 
 	activities = {0: "'exit'", 1: "'entry'"}
@@ -130,17 +132,22 @@ def insertHistoricalData(cursor, table):
 	#######################################
 	##### First compute the weekdays ######
 	#######################################
-
-	# Closing time is equal to 11:30pm
-	end_date = datetime.datetime(2015, 9, 15, 23, 30, 0)
 	
+	start_day_index = 14
+	end_day_index = 14
+
 	for day in weekdays:
 		# Reset the counts after each day
 		# Start at 10, to get higher occupancy stats
 		count = 10
 
 		# Opening time is equal to 6:00am
-		start_time = datetime.datetime(2015, 9, 15, 5, 30, 0)
+		start_time = datetime.datetime(2015, 9, start_day_index, 5, 30, 0)
+		end_date = datetime.datetime(2015, 9, end_day_index, 23, 30, 0)
+
+		# Increment the start and end date
+		start_day_index += 1
+		end_day_index += 1
 		
 		while (start_time.time() < end_date.time()):
 
@@ -155,7 +162,7 @@ def insertHistoricalData(cursor, table):
 				count = 0
 
 			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)	
-			print query 
+			# print query 
 			
 			queries.append(query)
 			
@@ -170,10 +177,13 @@ def insertHistoricalData(cursor, table):
 	###### Then compute Friday #############
 	########################################
 
+	start_day_index = 18
+	end_day_index = 18
+
 	# Opening time is equal to 5:30am
-	start_time = datetime.datetime(2015, 9, 15, 5, 30, 0)
+	start_time = datetime.datetime(2015, 9, start_day_index, 5, 30, 0)
 	# Closing time is equal to 11:30pm
-	end_date = datetime.datetime(2015, 9, 15, 6, 0, 0)
+	end_date = datetime.datetime(2015, 9, end_day_index, 6, 0, 0)
 
 	# Reset count
 	count = 10
@@ -193,7 +203,7 @@ def insertHistoricalData(cursor, table):
 				count = 0
 
 			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)
-			print query 
+			# print query 
 			
 			queries.append(query)
 			
@@ -208,10 +218,13 @@ def insertHistoricalData(cursor, table):
 	###### Then compute Saturday ###########
 	########################################
 
+	start_day_index = 19
+	end_day_index = 19
+
 	# Opening time is equal to 10:00am
-	start_time = datetime.datetime(2015, 9, 15, 10, 0, 0)
+	start_time = datetime.datetime(2015, 9, start_day_index, 10, 0, 0)
 	# Closing time is equal to 11:30pm
-	end_date = datetime.datetime(2015, 9, 15, 7, 0, 0)
+	end_date = datetime.datetime(2015, 9, end_day_index, 7, 0, 0)
 
 	# Reset count
 	count = 10
@@ -231,7 +244,7 @@ def insertHistoricalData(cursor, table):
 				count = 0
 
 			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)	
-			print query 
+			# print query 
 			
 			queries.append(query)
 			
@@ -247,10 +260,13 @@ def insertHistoricalData(cursor, table):
 	###### Then compute Sunday #############
 	########################################
 
+	start_day_index = 20
+	end_day_index = 20
+
 	# Opening time is equal to 1:00pm
-	start_time = datetime.datetime(2015, 9, 15, 13, 0, 0)
+	start_time = datetime.datetime(2015, 9, start_day_index, 13, 0, 0)
 	# Closing time is equal to 11:30pm
-	end_date = datetime.datetime(2015, 9, 15, 23, 30, 0)
+	end_date = datetime.datetime(2015, 9, end_day_index, 23, 30, 0)
 
 
 	# Reset count
@@ -272,7 +288,7 @@ def insertHistoricalData(cursor, table):
 
 			query = """ INSERT INTO %s (activity, timestamp, count, day) VALUES (%s, %s, %i, %s); """ % (table, activity, "'" + start_time.strftime("%Y-%m-%d %H:%M:%S") + "'", count, day)
 	
-			print query 
+			# print query 
 			
 			queries.append(query)
 			
@@ -284,8 +300,8 @@ def insertHistoricalData(cursor, table):
 
 
 	insertionCount = 0
+	
 	# Insert queries into database
-	print "\nInserting queries... (This might take awhile)."
 	for query in queries:
 		try:
 			cursor.execute(query)
@@ -310,11 +326,6 @@ def writeToFile(queries, name):
 
 if __name__ == "__main__":
 
-	host = "ec2-54-163-226-9.compute-1.amazonaws.com"
-	database = "d88utg4hgqpgob"
-	username = "uppsdlfesoxmrt"
-	password = "ESZMChU9TsTXJmvEDBvXtm4Vht"
-
 	# Generate a cursor
 	connection = establishConnection(host, database, username, password)
 	cursor = connection.cursor()
@@ -326,15 +337,19 @@ if __name__ == "__main__":
 	]
 
 	schools_historical = [
-	'"davidson.historical"'
+	'"davidson.historical"',
+	'"wakeforest.historical"',
+	'"unc.historical"'
 	]
 
 	#response = queryTable(cursor, '"wakeforest.average"', "'monday'")
 	# for school in schools_average:
 	# 	insertAverageData(cursor, school)
 
-	# for school in schools_historical:
-	# 	queries = insertHistoricalData(cursor, school)
+	queries = []
+
+	for school in schools_historical:
+		queries.append(insertHistoricalData(cursor, school))
 
 	connection.commit()
 
